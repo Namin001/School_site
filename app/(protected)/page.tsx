@@ -257,38 +257,7 @@ export default function HomePage() {
             </div>
           </div>
 
-        {/* DYNAMIC UPDATES SECTION (Social Media Style) */}
-        <div id="home" style={{ marginBottom: '5rem' }}>
-          <h2 className="section-title" style={{ textAlign: 'left', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-             <Bell className="animate-pulse" /> Latest Updates
-          </h2>
-          {updates.length === 0 ? (
-            <div className="notice-board" style={{ background: 'var(--card-bg)', borderLeft: '5px solid var(--accent)' }}>
-                <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.8', fontSize: '1.1rem', color: 'var(--text-main)' }}>
-                {getContent('home')}
-                </div>
-            </div>
-          ) : (
-            <div className="latest-updates-grid">
-                {updates.map(update => (
-                    <div key={update.id} className="card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                        {update.imagePath && (
-                            <img src={update.imagePath} alt={update.title} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-                        )}
-                        <div style={{ padding: '2rem' }}>
-                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>{new Date(update.createdAt).toLocaleDateString()}</div>
-                            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: 'var(--primary)', fontFamily: 'Outfit' }}>{update.title}</h3>
-                            {update.subject && <p style={{ fontWeight: 600, color: 'var(--text-muted)', marginBottom: '1rem' }}>{update.subject}</p>}
-                            <p style={{ color: 'var(--text-main)', marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{update.content}</p>
-                            <button className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', gap: '0.5rem' }}>
-                                View Details <ArrowRight size={16} />
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div>
-          )}
-        </div>
+
 
         {/* ADMISSION HUB SECTION (New Dynamic Multi-Post Section) */}
         {admissionPosts.length > 0 && (

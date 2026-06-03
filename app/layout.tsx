@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import CustomCursor from "@/components/CustomCursor";
 import ScrollProgress from "@/components/ScrollProgress";
 
 export const metadata: Metadata = {
-  title: "SVM School Admin & Portal",
-  description: "Official Website of SVM School",
+  title: "Shubha Vidyalaya",
+  description: "Official Website of Shubha Vidyalaya",
+  icons: {
+    icon: "/svm_logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -31,6 +35,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body suppressHydrationWarning>
+        <CustomCursor />
         <ScrollProgress />
         {children}
       </body>

@@ -23,7 +23,7 @@ export async function PUT(
         ]));
 
         // Using a transaction to ensure atomic update of group and memberships
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
             await tx.group.update({
                 where: { id: groupId },
                 data: { name, description }

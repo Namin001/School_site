@@ -2,6 +2,9 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
 const secretKey = process.env.JWT_SECRET || 'fallback-secret-key-do-not-use-in-prod'
+if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'fallback-secret-key-do-not-use-in-prod')) {
+  console.warn('\x1b[33m%s\x1b[0m', '⚠️ WARNING: JWT_SECRET is not configured or is using the insecure default fallback in production. Please set JWT_SECRET in your environment variables.')
+}
 const key = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: any) {

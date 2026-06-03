@@ -1,0 +1,241 @@
+﻿
+> website@0.1.0 build
+> next build
+
+   Γû▓ Next.js 15.5.15
+   - Environments: .env
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 2.5s
+   Linting and checking validity of types ...
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Failed to compile.
+
+./app/(protected)/about/page.tsx
+198:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/(protected)/admin/page.tsx
+24:10  Warning: 'isUpdatingStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+119:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+138:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+152:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+173:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+193:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+213:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+268:13  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+293:13  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+317:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+387:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+471:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+498:13  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+526:13  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+541:13  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+564:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+842:57  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+846:57  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+852:57  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+856:57  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+973:44  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1168:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1325:29  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1333:33  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1356:38  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+1374:47  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1386:44  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+1387:44  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./app/(protected)/admin/teachers/page.tsx
+7:5  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+10:5  Warning: 'BookOpen' is defined but never used.  @typescript-eslint/no-unused-vars
+112:18  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+132:18  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+151:18  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+436:74  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/(protected)/admissions/apply/page.tsx
+3:10  Warning: 'ArrowRight' is defined but never used.  @typescript-eslint/no-unused-vars
+42:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(protected)/admissions/page.tsx
+3:22  Warning: 'Info' is defined but never used.  @typescript-eslint/no-unused-vars
+3:58  Warning: 'Calendar' is defined but never used.  @typescript-eslint/no-unused-vars
+11:10  Warning: 'bannerUrl' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+32:16  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+90:158  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+142:123  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./app/(protected)/career/page.tsx
+3:29  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+3:35  Warning: 'Phone' is defined but never used.  @typescript-eslint/no-unused-vars
+3:121  Warning: 'ArrowRight' is defined but never used.  @typescript-eslint/no-unused-vars
+3:143  Warning: 'Percent' is defined but never used.  @typescript-eslint/no-unused-vars
+78:18  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(protected)/forum/page.tsx
+3:16  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+3:130  Warning: 'Play' is defined but never used.  @typescript-eslint/no-unused-vars
+3:136  Warning: 'Pause' is defined but never used.  @typescript-eslint/no-unused-vars
+46:6  Warning: React Hook useEffect has a missing dependency: 'fetchGroups'. Either include it or remove the 
+dependency array.  react-hooks/exhaustive-deps
+98:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+126:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+273:6  Warning: React Hook useEffect has a missing dependency: 'fetchMessages'. Either include it or remove the 
+dependency array.  react-hooks/exhaustive-deps
+506:37  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/(protected)/layout.tsx
+2:10  Warning: 'redirect' is defined but never used.  @typescript-eslint/no-unused-vars
+85:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/(protected)/newsletter/page.tsx
+3:10  Warning: 'Newspaper' is defined but never used.  @typescript-eslint/no-unused-vars
+3:21  Warning: 'Calendar' is defined but never used.  @typescript-eslint/no-unused-vars
+4:8  Warning: 'Link' is defined but never used.  @typescript-eslint/no-unused-vars
+377:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+496:9  Error: 'theme' is never reassigned. Use 'const' instead.  prefer-const
+531:13  Warning: 'dt' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+553:6  Warning: React Hook useEffect has a missing dependency: 'SCENE_NAMES.length'. Either include it or remove the 
+dependency array.  react-hooks/exhaustive-deps
+
+./app/(protected)/page.tsx
+3:10  Warning: 'getSession' is defined but never used.  @typescript-eslint/no-unused-vars
+6:81  Warning: 'Info' is defined but never used.  @typescript-eslint/no-unused-vars
+6:87  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+44:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+68:6  Warning: React Hook useEffect has a missing dependency: 'dynamicWords.length'. Either include it or remove the 
+dependency array.  react-hooks/exhaustive-deps
+275:29  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+315:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+335:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/(protected)/profile/page.tsx
+3:39  Warning: 'MapPin' is defined but never used.  @typescript-eslint/no-unused-vars
+3:54  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+3:60  Warning: 'Calendar' is defined but never used.  @typescript-eslint/no-unused-vars
+3:88  Warning: 'Heart' is defined but never used.  @typescript-eslint/no-unused-vars
+18:22  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+98:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+193:178  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+197:178  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+241:108  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+250:108  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./app/api/admin/teachers/route.ts
+8:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/admissions/banner/route.ts
+14:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+47:18  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/applications/route.ts
+38:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+59:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/careers/route.ts
+7:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/classes/route.ts
+12:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/content/route.ts
+36:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/floaters/route.ts
+7:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+20:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/groups/route.ts
+5:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/groups/[groupId]/messages/route.ts
+110:69  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/home-banner/route.ts
+10:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+19:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+53:9  Error: 'record' is never reassigned. Use 'const' instead.  prefer-const
+98:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+115:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/me/route.ts
+4:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/messages/route.ts
+70:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/posts/route.ts
+65:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+75:9  Error: 'additionalImagePaths' is never reassigned. Use 'const' instead.  prefer-const
+111:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+153:26  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+187:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/users/route.ts
+8:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+193:11  Error: 'classGroup' is never reassigned. Use 'const' instead.  prefer-const
+208:18  Warning: '_' is defined but never used.  @typescript-eslint/no-unused-vars
+219:16  Warning: '_' is defined but never used.  @typescript-eslint/no-unused-vars
+232:16  Warning: '_' is defined but never used.  @typescript-eslint/no-unused-vars
+291:9  Error: 'classGroup' is never reassigned. Use 'const' instead.  prefer-const
+307:18  Warning: '_' is defined but never used.  @typescript-eslint/no-unused-vars
+318:14  Warning: '_' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/layout.tsx
+21:9  Warning: Custom fonts not added in `pages/_document.js` will only load for a single page. This is discouraged. 
+See: https://nextjs.org/docs/messages/no-page-custom-font  @next/next/no-page-custom-font
+
+./app/login/page.tsx
+71:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/BookLoader.tsx
+5:38  Warning: 'text' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+45:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from 
+your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/Navbar.tsx
+10:9  Warning: 'isHome' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+11:9  Warning: 'isNewsletter' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+117:18  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/auth.ts
+28:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: 
+https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

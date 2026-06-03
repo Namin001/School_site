@@ -15,12 +15,12 @@ export default async function ProtectedLayout({
       <GeometricBackground />
       <Navbar session={session} />
       {children}
-      <footer style={{ 
-        background: 'linear-gradient(135deg, rgba(10, 54, 104, 0.95) 0%, rgba(15, 75, 140, 0.9) 100%)', 
+      <footer style={{
+        background: 'linear-gradient(135deg, rgba(10, 54, 104, 0.95) 0%, rgba(15, 75, 140, 0.9) 100%)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        color: 'white', 
-        padding: '3rem 2rem 2.5rem', 
+        color: 'white',
+        padding: '1.5rem 1rem 1rem',
         marginTop: 'auto',
         borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: '0 -20px 40px rgba(0, 0, 0, 0.2)',
@@ -66,7 +66,7 @@ export default async function ProtectedLayout({
           zIndex: 0,
           pointerEvents: 'none'
         }} />
-        
+
         {/* Radial Glass Reflection */}
         <div style={{
           position: 'absolute',
@@ -90,7 +90,7 @@ export default async function ProtectedLayout({
           </div>
           <div>
             <h4 style={{ color: 'var(--accent)', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', fontWeight: 800 }}>Quick Navigation</h4>
-            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <li><Link href="/" style={{ color: 'white', textDecoration: 'none', opacity: 0.8, fontSize: '0.95rem' }} className="footer-link">Home Portal</Link></li>
               <li><Link href="/about" style={{ color: 'white', textDecoration: 'none', opacity: 0.8, fontSize: '0.95rem' }} className="footer-link">About Mission</Link></li>
               <li><Link href="/newsletter" style={{ color: 'white', textDecoration: 'none', opacity: 0.8, fontSize: '0.95rem' }} className="footer-link">School Newsletter</Link></li>
@@ -100,15 +100,32 @@ export default async function ProtectedLayout({
           </div>
           <div>
             <h4 style={{ color: 'var(--accent)', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', fontWeight: 800 }}>Connect With Us</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <p style={{ fontSize: '0.95rem', opacity: 0.8, display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>📍 No.1, Shubham campus, Periyar street, Mettupalayam, Thiruvarur, 610001</p>
               <p style={{ fontSize: '0.95rem', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>📞 04366-226688 / 9943938371</p>
               <p style={{ fontSize: '0.95rem', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>✉️ tvrsvmhss@gmail.com</p>
             </div>
           </div>
         </div>
-        <div className="page-container" style={{ padding: 0, marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'center', fontSize: '0.85rem', opacity: 0.5, letterSpacing: '1px' }}>
-          © {new Date().getFullYear()} SHUBHA VIDYALAYA MATRICULATION HIGHER SECONDARY SCHOOL. ALL RIGHTS RESERVED.
+        <div className="page-container" style={{ padding: 0, marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', fontSize: '0.85rem', opacity: 0.7, letterSpacing: '1px' }}>
+          <div>© {new Date().getFullYear()} SHUBHA VIDYALAYA MATRICULATION HIGHER SECONDARY SCHOOL. ALL RIGHTS RESERVED.</div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            opacity: 1,
+            padding: '0.5rem 1.25rem',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '9999px',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)'
+          }}>
+            <span style={{ fontSize: '0.85rem', opacity: 0.8 }}>Developed by</span>
+            <img src="/zyro-logo.png" alt="Zyro Soft Logo" style={{ height: '24px', width: 'auto' }} />
+            <span style={{ fontWeight: 700, fontFamily: 'Outfit', letterSpacing: '1px', background: 'linear-gradient(90deg, #00e5ff, #0077ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '0.95rem' }}>Zyro Soft</span>
+          </div>
         </div>
       </footer>
     </>

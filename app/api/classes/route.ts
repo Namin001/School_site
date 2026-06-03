@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     });
     
     // Sort classes based on CLASS_OPTIONS order
-    const sortedClasses = classes.sort((a, b) => {
+    const sortedClasses = classes.sort((a: any, b: any) => {
       const idxA = CLASS_OPTIONS.indexOf(a.name);
       const idxB = CLASS_OPTIONS.indexOf(b.name);
       if (idxA === -1 && idxB === -1) return 0;
@@ -35,9 +35,9 @@ export async function GET(request: Request) {
       where: { role: { in: ['PARENT', 'TEACHER'] } }
     });
 
-    const classStats = sortedClasses.map(cls => {
-      const students = users.filter(u => u.className === cls.name && u.role === 'PARENT').length;
-      const teachers = users.filter(u => u.className === cls.name && u.role === 'TEACHER').length;
+    const classStats = sortedClasses.map((cls: any) => {
+      const students = users.filter((u: any) => u.className === cls.name && u.role === 'PARENT').length;
+      const teachers = users.filter((u: any) => u.className === cls.name && u.role === 'TEACHER').length;
       
       return {
         ...cls,
