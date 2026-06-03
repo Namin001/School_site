@@ -20,13 +20,17 @@ if (!databaseUrl) {
   }
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  datasources: {
-    db: {
-      url: databaseUrl,
+export const prisma = globalForPrisma.prisma ?? (() => {
+  process.env.DATABASE_URL = databaseUrl;
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: databaseUrl,
+      },
     },
-  },
-})
+  });
+})()
+
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 

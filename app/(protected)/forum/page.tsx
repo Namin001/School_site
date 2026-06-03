@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { Send, Users, Search, Plus, MessageSquare, Paperclip, FileText, X, Download, Trash2, Settings, AlertCircle, Mic, Square, Play, Pause, Loader2, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Send, Users, Search, Plus, MessageSquare, Paperclip, FileText, X, Download, Trash2, Settings, AlertCircle, Mic, Square, Play, Pause, Loader2, PanelLeftClose, PanelLeftOpen, ArrowLeft } from 'lucide-react';
 import BookLoader from '@/components/BookLoader';
 
 export default function ForumPage() {
@@ -15,6 +15,7 @@ export default function ForumPage() {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [availableUsers, setAvailableUsers] = useState<any[]>([]);
   const [isSidebarHidden, setIsSidebarHidden] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Create Group State
   const [newGroupName, setNewGroupName] = useState('');
@@ -44,6 +45,19 @@ export default function ForumPage() {
     fetchProfile();
     fetchGroups();
   }, []);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile && activeGroupId) {
+        setIsSidebarHidden(true);
+      }
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [activeGroupId]);
 
   useEffect(() => {
     if (currentUser?.role === 'ADMIN' && (showNewGroupModal || showSettingsModal)) {
@@ -304,8 +318,20 @@ export default function ForumPage() {
       {/* Sidebar */}
       <div className={`chat-sidebar ${isSidebarHidden ? 'hidden' : ''}`}>
         <div className="chat-sidebar-header">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ margin: 0, fontFamily: 'Outfit', fontSize: '1.25rem', color: 'var(--primary)' }}>Portals</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              {isMobile && activeGroupId && (
+                <button 
+                  className="icon-btn" 
+                  onClick={() => setIsSidebarHidden(true)}
+                  title="Close Sidebar"
+                  style={{ padding: '4px', marginRight: '4px' }}
+                >
+                  <ArrowLeft size={20} />
+                </button>
+              )}
+              <h2 style={{ margin: 0, fontFamily: 'Outfit', fontSize: '1.25rem', color: 'var(--primary)' }}>Portals</h2>
+            </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               {currentUser?.role === 'ADMIN' && (
                 <button 
@@ -433,7 +459,12 @@ export default function ForumPage() {
             <div 
               key={group.id} 
               className={`group-item ${activeGroupId === group.id ? 'active' : ''} ${group.unreadCount > 0 ? 'has-unread' : ''}`} 
-              onClick={() => setActiveGroupId(group.id)}
+              onClick={() => {
+                setActiveGroupId(group.id);
+                if (isMobile) {
+                  setIsSidebarHidden(true);
+                }
+              }}
             >
               <div className="group-icon">{group.name.charAt(0)}</div>
               <div className="group-info">
@@ -462,9 +493,15 @@ export default function ForumPage() {
                   className="icon-btn sidebar-toggle" 
                   onClick={() => setIsSidebarHidden(!isSidebarHidden)}
                   title={isSidebarHidden ? "Show Sidebar" : "Hide Sidebar"}
-                  style={{ marginRight: '0.5rem' }}
+                  style={{ marginRight: '0.25rem', marginLeft: '-0.25rem' }}
                 >
-                  {isSidebarHidden ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
+                  {isMobile && isSidebarHidden ? (
+                    <ArrowLeft size={20} />
+                  ) : isSidebarHidden ? (
+                    <PanelLeftOpen size={20} />
+                  ) : (
+                    <PanelLeftClose size={20} />
+                  )}
                 </button>
                 <div className="group-icon" style={{ width: '45px', height: '45px', fontFamily: 'Outfit', borderRadius: '12px' }}>{activeGroup.name.charAt(0)}</div>
                 <div>
@@ -772,6 +809,27 @@ export default function ForumPage() {
         @keyframes badgePop {
             from { transform: scale(0.5); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+          .chat-sidebar {
+            width: 100% !important;
+            display: flex !important;
+          }
+          .chat-sidebar.hidden {
+            width: 0 !important;
+            display: none !important;
+          }
+          .chat-window {
+            display: flex !important;
+            width: 100% !important;
+          }
+          .chat-sidebar:not(.hidden) ~ .chat-window {
+            display: none !important;
+          }
+          .chat-header {
+            padding: 0.75rem 0.75rem !important;
+          }
         }
       `}</style>
     </div>
