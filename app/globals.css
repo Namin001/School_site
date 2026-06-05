@@ -1433,7 +1433,7 @@ tbody tr:last-child td {
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 4rem;
+    gap: 2.5rem;
 }
 
 @media (max-width: 768px) {
@@ -1443,7 +1443,7 @@ tbody tr:last-child td {
     }
     .footer-grid {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 }
 
