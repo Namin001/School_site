@@ -19,11 +19,16 @@ export default function ForumPage() {
   
   // Create Group State
   const [newGroupName, setNewGroupName] = useState('');
+  const [newGroupDescription, setNewGroupDescription] = useState('');
   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
   
   // Settings/Edit Group State
   const [editGroupName, setEditGroupName] = useState('');
+  const [editGroupDescription, setEditGroupDescription] = useState('');
   const [editSelectedUserIds, setEditSelectedUserIds] = useState<string[]>([]);
+  
+  const [editGroupId, setEditGroupId] = useState<string | null>(null);
+  const [showManageGroupsModal, setShowManageGroupsModal] = useState(false);
   
   // File Upload & Voice State
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -77,7 +82,7 @@ export default function ForumPage() {
     const res = await fetch('/api/me');
     if (res.ok) {
       const data = await res.json();
-      setCurrentUser(data);
+      setCurrentUser(data.user);
     }
   };
 
@@ -212,11 +217,12 @@ export default function ForumPage() {
     const res = await fetch('/api/groups', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newGroupName, memberIds: selectedUserIds })
+        body: JSON.stringify({ name: newGroupName, description: newGroupDescription, memberIds: selectedUserIds })
     });
 
     if (res.ok) {
         setNewGroupName('');
+        setNewGroupDescription('');
         setSelectedUserIds([]);
         setShowNewGroupModal(false);
         fetchGroups();
@@ -225,12 +231,12 @@ export default function ForumPage() {
 
   const updateGroup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!activeGroupId || !editGroupName.trim()) return;
+    if (!editGroupId || !editGroupName.trim()) return;
 
-    const res = await fetch(`/api/groups/${activeGroupId}`, {
+    const res = await fetch(`/api/groups/${editGroupId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: editGroupName, memberIds: editSelectedUserIds })
+        body: JSON.stringify({ name: editGroupName, description: editGroupDescription, memberIds: editSelectedUserIds })
     });
 
     if (res.ok) {
@@ -242,16 +248,19 @@ export default function ForumPage() {
     }
   };
 
-  const deleteGroup = async () => {
-    if (!activeGroupId || !window.confirm('Are you sure you want to delete this group? This action cannot be undone.')) return;
+  const deleteGroup = async (groupIdToDelete?: any) => {
+    const id = typeof groupIdToDelete === 'string' ? groupIdToDelete : editGroupId;
+    if (!id || !window.confirm('Are you sure you want to delete this group? This action cannot be undone.')) return;
 
-    const res = await fetch(`/api/groups/${activeGroupId}`, {
+    const res = await fetch(`/api/groups/${id}`, {
         method: 'DELETE'
     });
 
     if (res.ok) {
         setShowSettingsModal(false);
-        setActiveGroupId(null);
+        if (activeGroupId === id) {
+          setActiveGroupId(null);
+        }
         fetchGroups();
     }
   };
@@ -302,13 +311,33 @@ export default function ForumPage() {
   const activeGroup = groups.find(g => g.id === activeGroupId);
   const filteredGroups = groups.filter(g => g.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  // Open settings with current group data
-  const openSettings = () => {
-    if (!activeGroup) return;
-    setEditGroupName(activeGroup.name);
+  const openSettingsForGroup = async (group: any) => {
+    setEditGroupId(group.id);
+    setEditGroupName(group.name);
+    setEditGroupDescription(group.description || '');
     setEditSelectedUserIds([]); 
     setUserSearchQuery('');
     setShowSettingsModal(true);
+    setShowManageGroupsModal(false);
+
+    try {
+      const res = await fetch(`/api/groups/${group.id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setEditSelectedUserIds(data.memberIds || []);
+        if (data.description !== undefined) {
+          setEditGroupDescription(data.description || '');
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching group details:', e);
+    }
+  };
+
+  // Open settings with current group data
+  const openSettings = async () => {
+    if (!activeGroup) return;
+    await openSettingsForGroup(activeGroup);
   };
 
   if (isLoading) return <BookLoader text="Connecting to Community..." />;
@@ -334,17 +363,27 @@ export default function ForumPage() {
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               {currentUser?.role === 'ADMIN' && (
-                <button 
-                  className="btn" 
-                  style={{ padding: '0.5rem', borderRadius: '50%' }} 
-                  title="New Group"
-                  onClick={() => {
-                    setUserSearchQuery('');
-                    setShowNewGroupModal(true);
-                  }}
-                >
-                  <Plus size={20} />
-                </button>
+                <>
+                  <button 
+                    className="btn" 
+                    style={{ padding: '0.5rem', borderRadius: '50%', background: 'transparent', color: 'var(--primary)' }} 
+                    title="Manage Groups"
+                    onClick={() => setShowManageGroupsModal(true)}
+                  >
+                    <Settings size={20} />
+                  </button>
+                  <button 
+                    className="btn" 
+                    style={{ padding: '0.5rem', borderRadius: '50%' }} 
+                    title="New Group"
+                    onClick={() => {
+                      setUserSearchQuery('');
+                      setShowNewGroupModal(true);
+                    }}
+                  >
+                    <Plus size={20} />
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -371,6 +410,10 @@ export default function ForumPage() {
                 <div className="form-group">
                   <label className="form-label">Group Name</label>
                   <input className="input" value={newGroupName} onChange={(e) => setNewGroupName(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Description</label>
+                  <textarea className="input" style={{ minHeight: '60px', resize: 'vertical' }} value={newGroupDescription} onChange={(e) => setNewGroupDescription(e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Members</label>
@@ -411,7 +454,7 @@ export default function ForumPage() {
             <div className="card modal-content" style={{ width: '100%', maxWidth: '450px', padding: '2rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <h3 style={{ margin: 0 }}>Group Settings</h3>
-                <button className="btn danger" onClick={deleteGroup} title="Delete Group">
+                <button type="button" className="btn danger" onClick={() => deleteGroup()} title="Delete Group">
                    <Trash2 size={18} />
                 </button>
               </div>
@@ -419,6 +462,10 @@ export default function ForumPage() {
                 <div className="form-group">
                   <label className="form-label">Rename Group</label>
                   <input className="input" value={editGroupName} onChange={(e) => setEditGroupName(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Description</label>
+                  <textarea className="input" style={{ minHeight: '60px', resize: 'vertical' }} value={editGroupDescription} onChange={(e) => setEditGroupDescription(e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Update Members</label>
@@ -450,6 +497,49 @@ export default function ForumPage() {
                   <button type="button" className="btn secondary" onClick={() => setShowSettingsModal(false)}>Close</button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {showManageGroupsModal && (
+          <div className="modal-overlay">
+            <div className="card modal-content" style={{ width: '100%', maxWidth: '500px', padding: '2rem', maxHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <h3 style={{ margin: 0 }}>Manage Groups</h3>
+                <button type="button" className="btn" style={{ padding: '0.5rem', borderRadius: '50%' }} onClick={() => {
+                  setShowManageGroupsModal(false);
+                  setUserSearchQuery('');
+                  setNewGroupName('');
+                  setNewGroupDescription('');
+                  setSelectedUserIds([]);
+                  setShowNewGroupModal(true);
+                }} title="Create New Group">
+                  <Plus size={18} />
+                </button>
+              </div>
+              <div style={{ overflowY: 'auto', flex: 1, marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {groups.map(group => (
+                  <div key={group.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #eee' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', maxWidth: '70%' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)' }}>{group.name}</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {group.description || 'No description'}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button type="button" className="btn" style={{ padding: '4px 8px', background: 'transparent', color: 'var(--primary)' }} onClick={() => openSettingsForGroup(group)} title="Edit Group">
+                        <Settings size={16} />
+                      </button>
+                      <button type="button" className="btn danger" style={{ padding: '4px 8px', background: 'transparent', color: '#ef4444' }} onClick={() => deleteGroup(group.id)} title="Delete Group">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="modal-actions" style={{ marginTop: 0 }}>
+                <button type="button" className="btn secondary" style={{ width: '100%' }} onClick={() => setShowManageGroupsModal(false)}>Close</button>
+              </div>
             </div>
           </div>
         )}
@@ -506,7 +596,9 @@ export default function ForumPage() {
                 <div className="group-icon" style={{ width: '45px', height: '45px', fontFamily: 'Outfit', borderRadius: '12px' }}>{activeGroup.name.charAt(0)}</div>
                 <div>
                   <div style={{ fontWeight: 800, color: 'var(--text-main)', fontFamily: 'Outfit', fontSize: '1rem' }}>{activeGroup.name}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>{activeGroup._count?.members || 0} online members</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                    {activeGroup.description ? `${activeGroup.description} • ` : ''}{activeGroup._count?.members || 0} online members
+                  </div>
                 </div>
               </div>
               {currentUser?.role === 'ADMIN' && (

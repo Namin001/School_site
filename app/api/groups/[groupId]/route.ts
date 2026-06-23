@@ -2,6 +2,67 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getSession } from '@/lib/auth'
 
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ groupId: string }> }
+) {
+  const session = await getSession()
+  if (!session || session.role !== 'ADMIN') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  }
+
+  const { groupId } = await params;
+
+  try {
+    if ((prisma as any).group) {
+      const group = await (prisma as any).group.findUnique({
+        where: { id: groupId },
+        include: {
+          members: {
+            select: { userId: true }
+          }
+        }
+      });
+
+      if (!group) {
+        return NextResponse.json({ error: 'Group not found' }, { status: 404 })
+      }
+
+      return NextResponse.json({
+        id: group.id,
+        name: group.name,
+        description: group.description,
+        memberIds: group.members.map((m: any) => m.userId)
+      });
+    } else {
+      // Fallback to RAW SQL
+      const groups: any[] = await prisma.$queryRawUnsafe(
+        `SELECT * FROM "Group" WHERE id = ? LIMIT 1`,
+        groupId
+      );
+
+      if (groups.length === 0) {
+        return NextResponse.json({ error: 'Group not found' }, { status: 404 })
+      }
+
+      const members: any[] = await prisma.$queryRawUnsafe(
+        `SELECT userId FROM GroupMember WHERE groupId = ?`,
+        groupId
+      );
+
+      return NextResponse.json({
+        id: groups[0].id,
+        name: groups[0].name,
+        description: groups[0].description,
+        memberIds: members.map((m: any) => m.userId)
+      });
+    }
+  } catch (error: any) {
+    console.error('Group GET error:', error);
+    return NextResponse.json({ error: 'Failed to fetch group', details: error.message }, { status: 500 })
+  }
+}
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ groupId: string }> }
