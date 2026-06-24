@@ -72,6 +72,15 @@ if (databaseUrl.startsWith('file:')) {
   };
 
   if (needsPush) {
+    const dbDir = path.dirname(dbPath);
+    if (!fs.existsSync(dbDir)) {
+      logMsg(`[Database] Creating missing parent directory: ${dbDir}`);
+      try {
+        fs.mkdirSync(dbDir, { recursive: true });
+      } catch (err: any) {
+        logMsg(`[Database] Failed to create directory ${dbDir}: ${err.message}`);
+      }
+    }
     logMsg(`[Database] File exists: ${dbExists}, Schema hash matches: ${hashMatches}. Auto-initializing/updating SQLite database...`);
     let localPrismaCli = path.join(process.cwd(), 'node_modules', 'prisma', 'build', 'index.js');
     try {
