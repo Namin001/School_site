@@ -58,7 +58,7 @@ if (!dev) {
 
     for (const startDir of searchDirs) {
       let current = path.resolve(startDir);
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 10; i++) {
         const checkPath = path.join(current, 'node_modules', 'prisma', 'build', 'index.js');
         if (fs.existsSync(checkPath)) {
           localPrismaCli = checkPath;
@@ -71,10 +71,22 @@ if (!dev) {
       if (localPrismaCli) break;
     }
 
+    // Resolve npx command path relative to the running node executable as a fallback
+    let npxCommand = 'npx';
+    try {
+      const nodeBinDir = path.dirname(process.execPath);
+      const possibleNpx = path.join(nodeBinDir, 'npx');
+      if (fs.existsSync(possibleNpx)) {
+        npxCommand = `"${possibleNpx}"`;
+      } else if (fs.existsSync(possibleNpx + '.cmd')) {
+        npxCommand = `"${possibleNpx}.cmd"`;
+      }
+    } catch (e) {}
+
     const useLocalPrisma = !!localPrismaCli;
 
     const runPrisma = (args) => {
-      const cmd = useLocalPrisma ? `node "${localPrismaCli}" ${args}` : `npx prisma ${args}`
+      const cmd = useLocalPrisma ? `node "${localPrismaCli}" ${args}` : `${npxCommand} prisma ${args}`
       console.log(`[Prisma Startup] Running: ${cmd}`)
       execSync(cmd, { stdio: 'inherit', env: process.env })
     }
