@@ -47,8 +47,31 @@ if (!dev) {
       }
     }
 
-    let localPrismaCli = path.join(process.cwd(), 'node_modules', 'prisma', 'build', 'index.js')
-    const useLocalPrisma = fs.existsSync(localPrismaCli)
+    // Find local prisma CLI path dynamically at runtime
+    let localPrismaCli = '';
+    const searchDirs = [process.cwd()];
+    try {
+      if (typeof __dirname !== 'undefined') {
+        searchDirs.push(__dirname);
+      }
+    } catch (e) {}
+
+    for (const startDir of searchDirs) {
+      let current = path.resolve(startDir);
+      for (let i = 0; i < 5; i++) {
+        const checkPath = path.join(current, 'node_modules', 'prisma', 'build', 'index.js');
+        if (fs.existsSync(checkPath)) {
+          localPrismaCli = checkPath;
+          break;
+        }
+        const parent = path.dirname(current);
+        if (parent === current) break;
+        current = parent;
+      }
+      if (localPrismaCli) break;
+    }
+
+    const useLocalPrisma = !!localPrismaCli;
 
     const runPrisma = (args) => {
       const cmd = useLocalPrisma ? `node "${localPrismaCli}" ${args}` : `npx prisma ${args}`

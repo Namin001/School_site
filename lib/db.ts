@@ -82,15 +82,31 @@ if (databaseUrl.startsWith('file:')) {
       }
     }
     logMsg(`[Database] File exists: ${dbExists}, Schema hash matches: ${hashMatches}. Auto-initializing/updating SQLite database...`);
-    let localPrismaCli = path.join(process.cwd(), 'node_modules', 'prisma', 'build', 'index.js');
+    // Find local prisma CLI path dynamically at runtime without require.resolve (which Webpack resolves statically at build time)
+    let localPrismaCli = '';
+    const searchDirs = [process.cwd()];
     try {
-      const prismaPkgPath = require.resolve('prisma/package.json');
-      const resolvedCli = path.join(path.dirname(prismaPkgPath), 'build', 'index.js');
-      if (fs.existsSync(resolvedCli)) {
-        localPrismaCli = resolvedCli;
+      if (typeof __dirname !== 'undefined') {
+        searchDirs.push(__dirname);
       }
     } catch (e) {}
-    const useLocalPrisma = fs.existsSync(localPrismaCli);
+
+    for (const startDir of searchDirs) {
+      let current = path.resolve(startDir);
+      for (let i = 0; i < 5; i++) {
+        const checkPath = path.join(current, 'node_modules', 'prisma', 'build', 'index.js');
+        if (fs.existsSync(checkPath)) {
+          localPrismaCli = checkPath;
+          break;
+        }
+        const parent = path.dirname(current);
+        if (parent === current) break;
+        current = parent;
+      }
+      if (localPrismaCli) break;
+    }
+
+    const useLocalPrisma = !!localPrismaCli;
     const runCommand = useLocalPrisma
       ? `node "${localPrismaCli}" db push --accept-data-loss`
       : `npx prisma db push --accept-data-loss`;

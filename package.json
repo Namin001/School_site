@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prod:start": "npx prisma db push && next build && next start",
+    "prod:start": "prisma db push && next build && next start",
     "prisma:setup": "prisma generate && prisma db push",
     "prisma:generate": "prisma generate",
     "lint": "eslint",
