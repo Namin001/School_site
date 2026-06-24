@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import path from 'path'
 import fs from 'fs'
 import { execSync } from 'child_process'
+import crypto from 'crypto'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -22,22 +23,102 @@ if (!databaseUrl) {
   }
 }
 
-// Auto-initialize SQLite database if it's missing (e.g. first deploy on Hostinger)
+// Robust error logging utility for application errors
+export function logError(error: any) {
+  try {
+    const logDir = path.join(process.cwd(), 'prisma');
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+    const logPath = path.join(logDir, 'error.log');
+    const timestamp = new Date().toISOString();
+    const errorMessage = error instanceof Error ? error.stack || error.message : String(error);
+    fs.appendFileSync(logPath, `[${timestamp}] ${errorMessage}\n\n`);
+  } catch (e) {
+    console.error('Failed to write to error log:', e);
+  }
+}
+
+// Auto-initialize SQLite database and sync schema modifications
 if (databaseUrl.startsWith('file:')) {
   const dbPath = databaseUrl.substring(5);
-  if (!fs.existsSync(dbPath)) {
-    console.log(`[Database] File not found at ${dbPath}. Auto-initializing SQLite...`);
+  const dbExists = fs.existsSync(dbPath);
+  
+  const schemaPath = path.join(process.cwd(), 'prisma', 'schema.prisma');
+  const hashFilePath = path.join(process.cwd(), 'prisma', '.schema_pushed_hash');
+  const dbInitLogPath = path.join(process.cwd(), 'prisma', 'db_init.log');
+
+  let schemaHash = '';
+  if (fs.existsSync(schemaPath)) {
+    const schemaContent = fs.readFileSync(schemaPath, 'utf8');
+    schemaHash = crypto.createHash('md5').update(schemaContent).digest('hex');
+  }
+
+  let hashMatches = false;
+  if (fs.existsSync(hashFilePath)) {
+    const savedHash = fs.readFileSync(hashFilePath, 'utf8').trim();
+    hashMatches = (savedHash === schemaHash);
+  }
+
+  const needsPush = !dbExists || !hashMatches;
+
+  const logMsg = (msg: string) => {
     try {
-      // Create schema and tables
-      execSync('npx prisma db push --accept-data-loss', { stdio: 'inherit' });
-      // Run database seeding for default admin and initial groups
-      const seedPath = path.join(process.cwd(), 'prisma', 'seed.js');
-      if (fs.existsSync(seedPath)) {
-        execSync('node prisma/seed.js', { stdio: 'inherit' });
+      const timestamp = new Date().toISOString();
+      const formatted = `[${timestamp}] ${msg}\n`;
+      fs.appendFileSync(dbInitLogPath, formatted);
+    } catch (e) {}
+    console.log(msg);
+  };
+
+  if (needsPush) {
+    logMsg(`[Database] File exists: ${dbExists}, Schema hash matches: ${hashMatches}. Auto-initializing/updating SQLite database...`);
+    let localPrismaCli = path.join(process.cwd(), 'node_modules', 'prisma', 'build', 'index.js');
+    try {
+      const prismaPkgPath = require.resolve('prisma/package.json');
+      const resolvedCli = path.join(path.dirname(prismaPkgPath), 'build', 'index.js');
+      if (fs.existsSync(resolvedCli)) {
+        localPrismaCli = resolvedCli;
       }
-      console.log('[Database] SQLite database initialized and seeded successfully.');
-    } catch (err) {
-      console.error('[Database] Failed to auto-initialize SQLite database:', err);
+    } catch (e) {}
+    const useLocalPrisma = fs.existsSync(localPrismaCli);
+    const runCommand = useLocalPrisma
+      ? `node "${localPrismaCli}" db push --accept-data-loss`
+      : `npx prisma db push --accept-data-loss`;
+
+    logMsg(`[Database] Executing command: "${runCommand}"`);
+
+    try {
+      const pushOutput = execSync(runCommand, {
+        env: { ...process.env, DATABASE_URL: databaseUrl },
+        encoding: 'utf8'
+      });
+      logMsg(`[Database] Schema push succeeded:\n${pushOutput}`);
+
+      if (schemaHash) {
+        fs.writeFileSync(hashFilePath, schemaHash, 'utf8');
+        logMsg(`[Database] Updated schema hash file with: ${schemaHash}`);
+      }
+
+      // Seed if the database was just created
+      if (!dbExists) {
+        const seedPath = path.join(process.cwd(), 'prisma', 'seed.js');
+        if (fs.existsSync(seedPath)) {
+          logMsg(`[Database] Seeding database...`);
+          const seedOutput = execSync('node prisma/seed.js', {
+            env: { ...process.env, DATABASE_URL: databaseUrl },
+            encoding: 'utf8'
+          });
+          logMsg(`[Database] Seeding completed:\n${seedOutput}`);
+        } else {
+          logMsg(`[Database] Seed script not found at ${seedPath}`);
+        }
+      }
+    } catch (err: any) {
+      const errStdout = err.stdout ? String(err.stdout) : '';
+      const errStderr = err.stderr ? String(err.stderr) : '';
+      const errMsg = `[Database] Schema push/seeding failed!\nError: ${err.message}\nStdout: ${errStdout}\nStderr: ${errStderr}`;
+      logMsg(errMsg);
     }
   }
 }

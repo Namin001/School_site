@@ -48,3 +48,7 @@ next-env.d.ts
 /prisma/*.db-journal
 /prisma/*.db-shm
 /prisma/*.db-wal
+/prisma/.schema_pushed_hash
+/prisma/*.log
+/scratch/
+
